@@ -4,7 +4,7 @@ FROM python:3.11-slim
 # Set working directory in container
 WORKDIR /app
 
-# Copy requirements file first (for better caching)
+# Copy requirements file first
 COPY backend/requirements.txt .
 
 # Install Python dependencies
@@ -13,8 +13,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the backend code
 COPY backend/ .
 
-# Expose the port your FastAPI app runs on (typically 8000)
+# Expose the port 
 EXPOSE 8000
 
-# Command to run your FastAPI application
+# Command to run FastAPI application
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

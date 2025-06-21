@@ -18,7 +18,6 @@ const FeedbackSystem = () => {
     sentiment: 'positive'
   });
 
-  // Fetch dashboard data
   const fetchDashboardData = async (userId, role) => {
     try {
       const endpoint = role === 'manager' 
@@ -33,7 +32,6 @@ const FeedbackSystem = () => {
     }
   };
 
-  // Login function
   const handleLogin = async (e) => {
     e.preventDefault();
     
@@ -72,7 +70,6 @@ const FeedbackSystem = () => {
     }
   };
 
-  // Fetch team members (for managers)
   const fetchTeamMembers = async (managerId) => {
     try {
       const response = await fetch(`${API_BASE}/team-members/${managerId}`);
@@ -83,7 +80,6 @@ const FeedbackSystem = () => {
     }
   };
 
-  // Fetch feedback for employee
   const fetchEmployeeFeedback = async (employeeId) => {
     try {
       const response = await fetch(`${API_BASE}/feedback/employee/${employeeId}`);
@@ -94,7 +90,6 @@ const FeedbackSystem = () => {
     }
   };
 
-  // Fetch feedback for manager
   const fetchManagerFeedback = async (managerId) => {
     try {
       const response = await fetch(`${API_BASE}/feedback/manager/${managerId}`);
@@ -105,7 +100,6 @@ const FeedbackSystem = () => {
     }
   };
 
-  // Updated handleFeedbackSubmit function - replace the existing one
 const handleFeedbackSubmit = async (e) => {
   e.preventDefault();
   
@@ -116,7 +110,7 @@ const handleFeedbackSubmit = async (e) => {
   
   try {
     if (editingFeedback) {
-      // Update existing feedback
+      
       const response = await fetch(`${API_BASE}/feedback/${editingFeedback.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -129,7 +123,7 @@ const handleFeedbackSubmit = async (e) => {
       
       if (response.ok) {
         fetchManagerFeedback(user.user_id);
-        fetchDashboardData(user.user_id, 'manager'); // Added this line
+        fetchDashboardData(user.user_id, 'manager'); 
         setEditingFeedback(null);
       }
     } else {
@@ -142,7 +136,7 @@ const handleFeedbackSubmit = async (e) => {
       
       if (response.ok) {
         fetchManagerFeedback(user.user_id);
-        fetchDashboardData(user.user_id, 'manager'); // Added this line
+        fetchDashboardData(user.user_id, 'manager'); 
       }
     }
     
@@ -159,7 +153,6 @@ const handleFeedbackSubmit = async (e) => {
   }
 };
 
-  // Acknowledge feedback
   const acknowledgeFeedback = async (feedbackId) => {
     try {
       await fetch(`${API_BASE}/feedback/${feedbackId}/acknowledge`, {
@@ -171,7 +164,6 @@ const handleFeedbackSubmit = async (e) => {
     }
   };
 
-  // Start editing feedback
   const startEditFeedback = (feedback) => {
     setEditingFeedback(feedback);
     setFeedbackForm({
@@ -201,7 +193,6 @@ const handleFeedbackSubmit = async (e) => {
     setLoginForm({ username: "", password: "" }); 
   };
 
-  // Render login form
   if (!user) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
@@ -258,7 +249,6 @@ const handleFeedbackSubmit = async (e) => {
     );
   }
 
-  // Get sentiment color
   const getSentimentColor = (sentiment) => {
     switch (sentiment) {
       case 'positive': return 'text-green-600 bg-green-100';
@@ -269,7 +259,7 @@ const handleFeedbackSubmit = async (e) => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
+
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
@@ -296,7 +286,6 @@ const handleFeedbackSubmit = async (e) => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Dashboard Section */}
         {dashboardData && (
           <div className="bg-white rounded-lg shadow p-6 mb-6">
             <h2 className="text-lg font-semibold text-gray-900 flex items-center mb-4">
@@ -306,7 +295,6 @@ const handleFeedbackSubmit = async (e) => {
             
             {user.role === 'manager' ? (
               <div className="space-y-6">
-                {/* Manager Dashboard - Team Overview */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                   <div className="bg-blue-50 p-4 rounded-lg">
                     <div className="text-2xl font-bold text-blue-600">{dashboardData.total_team_members}</div>
@@ -360,7 +348,6 @@ const handleFeedbackSubmit = async (e) => {
               </div>
             ) : (
               <div className="space-y-6">
-                {/* Employee Dashboard - Timeline */}
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                   <div className="bg-blue-50 p-4 rounded-lg">
                     <div className="text-2xl font-bold text-blue-600">{dashboardData.total_feedback}</div>
@@ -423,10 +410,8 @@ const handleFeedbackSubmit = async (e) => {
           </div>
         )}
 
-        {/* Manager View */}
         {user.role === 'manager' && (
           <div className="space-y-6">
-            {/* Team Members Section */}
             <div className="bg-white rounded-lg shadow p-6">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-semibold text-gray-900 flex items-center">
@@ -462,7 +447,6 @@ const handleFeedbackSubmit = async (e) => {
               </div>
             </div>
 
-            {/* Feedback Form */}
             {showFeedbackForm && (
               <div className="bg-white rounded-lg shadow p-6">
                 <h3 className="text-lg font-semibold mb-4">
@@ -555,7 +539,6 @@ const handleFeedbackSubmit = async (e) => {
           </div>
         )}
 
-        {/* Feedback History */}
         <div className="bg-white rounded-lg shadow">
           <div className="p-6 border-b">
             <h2 className="text-lg font-semibold text-gray-900">
